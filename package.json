@@ -1,0 +1,22 @@
+{
+  "name": "daydish.ai",
+  "version": "1.0.0",
+  "description": "Day-Aware AI Cooking Assistant micro-app (PromptWars Hackathon Submission)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "ai",
+    "cooking",
+    "planner",
+    "promptwars",
+    "gemini"
+  ],
+  "author": "Antigravity Team",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

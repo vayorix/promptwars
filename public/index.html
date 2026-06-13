@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DayDish.AI: Generate customized, time- and budget-aware daily cooking schedules matching your work, fitness, travel, and pantry.">
+  <title>DayDish.AI - Day-Aware AI Cooking Planner</title>
+  
+  <!-- Modern Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Screen Reader Announcements (A11y) -->
+  <div id="sr-announcer" class="sr-only" role="status" aria-live="polite"></div>
+
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-icon" aria-hidden="true">🍳</div>
+        <div>
+          <h1>DayDish.AI</h1>
+          <p class="tagline">Your day determines your dinner. Time- & budget-aware meal planner.</p>
+        </div>
+      </div>
+      
+      <!-- Preset Judges Panel -->
+      <div class="judge-panel">
+        <span class="judge-label">⚖️ Judge Presets:</span>
+        <div class="preset-buttons">
+          <button type="button" class="preset-btn" data-preset="office" title="Load Office Worker Scenario">💼 Office Worker</button>
+          <button type="button" class="preset-btn" data-preset="student" title="Load Student Scenario">🎓 Budget Student</button>
+          <button type="button" class="preset-btn" data-preset="gym" title="Load Gym Enthusiast Scenario">💪 Gym Goer</button>
+          <button type="button" class="preset-btn" data-preset="family" title="Load Family of 4 Scenario">👨‍👩‍👧‍👦 Family of 4</button>
+          <button type="button" class="preset-btn" data-preset="travel" title="Load Busy Travel Scenario">✈️ On the Move</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <main class="dashboard-grid">
+    
+    <!-- Sidebar Form Controls -->
+    <section class="control-panel glass" aria-labelledby="form-title">
+      <h2 id="form-title">📋 Day Parameters</h2>
+      
+      <form id="plan-form" novalidate>
+        
+        <!-- Schedule Section -->
+        <fieldset class="form-section">
+          <legend>🕒 Daily Schedule</legend>
+          
+          <div class="form-group">
+            <label for="input-wakeup">Wake-up Time</label>
+            <input type="time" id="input-wakeup" name="wakeUp" value="07:00" required>
+          </div>
+
+          <div class="form-group">
+            <label for="input-occupation">Daily Environment</label>
+            <select id="input-occupation" name="occupation">
+              <option value="Remote Worker">🏡 Remote Worker (Fresh meals)</option>
+              <option value="Employee">🏢 Office Employee (Packable lunch)</option>
+              <option value="Student">🏫 Student / Campus (Budget & Quick)</option>
+            </select>
+          </div>
+          
+          <div class="checkbox-row">
+            <label class="custom-checkbox">
+              <input type="checkbox" id="input-gym" name="gymToday">
+              <span class="checkbox-box"></span>
+              <span class="checkbox-label">💪 Workout/Gym Session Today</span>
+            </label>
+          </div>
+
+          <div class="checkbox-row">
+            <label class="custom-checkbox">
+              <input type="checkbox" id="input-travel" name="travelToday">
+              <span class="checkbox-box"></span>
+              <span class="checkbox-label">🚗 Commuting / Travel Block</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Kitchen Resources Section -->
+        <fieldset class="form-section">
+          <legend>🍳 Kitchen Limits & Budget</legend>
+          
+          <div class="form-row">
+            <div class="form-group half">
+              <label for="input-time">Cook Time Max</label>
+              <select id="input-time" name="availableTime">
+                <option value="15">⚡ 15 mins (Express)</option>
+                <option value="30" selected>🕒 30 mins (Standard)</option>
+                <option value="60">🍳 60 mins (Gourmet)</option>
+              </select>
+            </div>
+            
+            <div class="form-group half">
+              <label for="input-family">Family Size</label>
+              <input type="number" id="input-family" name="familySize" min="1" max="10" value="1" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label for="input-budget">Daily Budget ($)</label>
+              <input type="number" id="input-budget" name="dailyBudget" min="1" step="0.50" value="20.00" required>
+            </div>
+            
+            <div class="form-group half">
+              <label for="input-diet">Dietary Filter</label>
+              <select id="input-diet" name="dietPreference">
+                <option value="None">🥗 No restriction</option>
+                <option value="Vegetarian">🌾 Vegetarian</option>
+                <option value="Vegan">🌱 Vegan</option>
+                <option value="Keto">🥩 Keto (Low Carb)</option>
+                <option value="Gluten-Free">🚫 Gluten Free</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Pantry Input Section -->
+        <fieldset class="form-section">
+          <legend>🥫 Pantry Stash</legend>
+          <div class="form-group">
+            <label for="input-pantry">Ingredients you already have (Comma separated)</label>
+            <textarea id="input-pantry" name="pantry" placeholder="e.g., Rice, Eggs, Oats, Garlic, Salt" rows="2"></textarea>
+            <p class="field-hint">We deduct these costs from your total grocery list automatically.</p>
+          </div>
+        </fieldset>
+
+        <button type="submit" class="submit-btn" id="generate-btn">
+          <span class="btn-text">Generate AI Cooking Blueprint</span>
+          <span class="spinner hidden" aria-hidden="true"></span>
+        </button>
+      </form>
+    </section>
+
+    <!-- Plan Display Area -->
+    <section class="main-display" aria-live="polite">
+      
+      <!-- Welcome Panel -->
+      <div id="welcome-panel" class="glass card text-center">
+        <h2>👋 Welcome to DayDish.AI</h2>
+        <p>Fill out your day parameters in the sidebar or click one of the <strong>Judge Presets</strong> at the top to see the AI reasoning engine plan a custom day timeline, budget checklist, and substitutes plan.</p>
+        <div class="mascot-art" aria-hidden="true">🍳🥦🛒🏷️</div>
+      </div>
+
+      <!-- Loading State Skeleton -->
+      <div id="loading-skeleton" class="hidden">
+        <div class="glass card skeleton-card">
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-meter"></div>
+        </div>
+        <div class="glass card skeleton-card">
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton-timeline">
+            <div class="skeleton skeleton-node"></div>
+            <div class="skeleton skeleton-node"></div>
+            <div class="skeleton skeleton-node"></div>
+          </div>
+        </div>
+        <div class="skeleton-grid">
+          <div class="glass card skeleton-meal"></div>
+          <div class="glass card skeleton-meal"></div>
+          <div class="glass card skeleton-meal"></div>
+        </div>
+      </div>
+
+      <!-- Error Message Panel -->
+      <div id="error-panel" class="glass card hidden error-card">
+        <div class="error-header">
+          <span class="error-icon" aria-hidden="true">⚠️</span>
+          <h3>Something went wrong</h3>
+        </div>
+        <p id="error-text">Failed to connect to the reasoning server. Please verify node server.js is running.</p>
+        <button type="button" class="btn-retry" onclick="document.getElementById('plan-form').requestSubmit();">Try Again</button>
+      </div>
+
+      <!-- Active Content Container -->
+      <div id="content-container" class="hidden">
+        
+        <!-- Budget & Feasibility Bar -->
+        <div class="glass card budget-dashboard">
+          <div class="budget-meta">
+            <h2>💰 Budget Feasibility Dashboard</h2>
+            <div class="budget-total-box">
+              <span class="meta-label">Total Spent:</span>
+              <span class="meta-val" id="total-spent-val">$0.00</span>
+              <span class="meta-budget" id="total-limit-val">/ $20.00 limit</span>
+            </div>
+          </div>
+          
+          <div class="gauge-container">
+            <div class="gauge-bar" id="budget-progress" style="width: 0%"></div>
+          </div>
+          
+          <div class="budget-metrics">
+            <div class="metric-item">
+              <span class="metric-icon">🥫</span>
+              <div class="metric-detail">
+                <span class="metric-name">Pantry Savings:</span>
+                <strong id="pantry-savings-val" class="text-success">$0.00 saved</strong>
+              </div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-icon" id="feasibility-status-icon">✅</span>
+              <div class="metric-detail">
+                <span class="metric-name">Feasibility Status:</span>
+                <strong id="feasibility-status-text" class="text-success">Within Budget</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Alert Box -->
+          <div id="budget-alert-box" class="alert-banner hidden">
+            <span class="alert-icon">⚠️</span>
+            <div class="alert-content">
+              <strong>Budget Limit Exceeded!</strong>
+              <p id="budget-alert-msg">Swap ingredients using the substitution cards below to reduce costs.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Schedule & Timeline Visualizer -->
+        <div class="glass card timeline-card">
+          <h2>🕒 Your Dynamic Cooking & eating Timeline</h2>
+          <div class="timeline-visual" id="timeline-flow" role="list">
+            <!-- Timeline nodes injected dynamically by JS -->
+          </div>
+        </div>
+
+        <!-- Meals & Recipes Grid -->
+        <div class="meal-grid">
+          
+          <!-- Breakfast Card -->
+          <article class="glass card meal-card" id="meal-breakfast" aria-labelledby="meal-bf-title">
+            <div class="meal-header bf">
+              <span class="meal-label-badge">🌅 Breakfast</span>
+              <h3 id="meal-bf-title">Meal Name</h3>
+              <div class="meal-meta">
+                <span id="bf-prep">🕒 10m prep</span>
+                <span id="bf-protein">💪 15g protein</span>
+              </div>
+            </div>
+            <div class="meal-body">
+              <details class="recipe-instructions">
+                <summary>👨‍🍳 Step-by-Step Cooking Steps</summary>
+                <ol id="bf-steps-list"></ol>
+              </details>
+            </div>
+          </article>
+
+          <!-- Lunch Card -->
+          <article class="glass card meal-card" id="meal-lunch" aria-labelledby="meal-lh-title">
+            <div class="meal-header lh">
+              <span class="meal-label-badge">☀️ Lunch</span>
+              <h3 id="meal-lh-title">Meal Name</h3>
+              <div class="meal-meta">
+                <span id="lh-prep">🕒 15m prep</span>
+                <span id="lh-protein">💪 20g protein</span>
+              </div>
+            </div>
+            <div class="meal-body">
+              <div id="lunch-office-badge" class="office-tag hidden" aria-label="Packable Office Meal">💼 Office Lunch Pick</div>
+              <details class="recipe-instructions">
+                <summary>👨‍🍳 Step-by-Step Cooking Steps</summary>
+                <ol id="lh-steps-list"></ol>
+              </details>
+            </div>
+          </article>
+
+          <!-- Dinner Card -->
+          <article class="glass card meal-card" id="meal-dinner" aria-labelledby="meal-dn-title">
+            <div class="meal-header dn">
+              <span class="meal-label-badge">🌙 Dinner</span>
+              <h3 id="meal-dn-title">Meal Name</h3>
+              <div class="meal-meta">
+                <span id="dn-prep">🕒 25m prep</span>
+                <span id="dn-protein">💪 35g protein</span>
+              </div>
+            </div>
+            <div class="meal-body">
+              <details class="recipe-instructions">
+                <summary>👨‍🍳 Step-by-Step Cooking Steps</summary>
+                <ol id="dn-steps-list"></ol>
+              </details>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Bottom Grid: Shopping & Substitutions -->
+        <div class="utility-grid">
+          
+          <!-- Shopping List Checklist -->
+          <section class="glass card grocery-list-card" aria-labelledby="shopping-title">
+            <h2 id="shopping-title">🛒 Grocery Shopping Checklist</h2>
+            <p class="field-hint">Tick items you already bought or have to dynamically recalculate spent totals.</p>
+            <div class="grocery-checklist" id="grocery-checklist-container">
+              <!-- Checked checkboxes reduce total cost -->
+            </div>
+          </section>
+
+          <!-- AI Ingredient Substitution Drawer -->
+          <section class="glass card substitution-card" aria-labelledby="sub-title">
+            <h2 id="sub-title">🔄 Recommended Swaps to Save Money</h2>
+            <div class="substitution-list" id="substitutions-container">
+              <!-- Substitution triggers injected by JS -->
+            </div>
+          </section>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>DayDish.AI • A PromptWars Hackathon Submission. Powered by Gemini 1.5 & Heuristics Decision Engine.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
