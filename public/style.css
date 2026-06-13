@@ -8,25 +8,25 @@
   --font-sans: 'Inter', system-ui, sans-serif;
 
   /* Colors */
-  --bg-app: #07050d;
-  --bg-gradient: radial-gradient(circle at 50% 0%, #150f29 0%, #07050d 80%);
-  --card-bg: rgba(16, 12, 30, 0.55);
-  --card-border: rgba(167, 139, 250, 0.15);
-  --card-border-hover: rgba(167, 139, 250, 0.35);
+  --bg-app: #09070f;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #22122b 0%, #09070f 85%);
+  --card-bg: rgba(18, 14, 30, 0.6);
+  --card-border: rgba(251, 146, 60, 0.12);
+  --card-border-hover: rgba(244, 63, 94, 0.35);
 
-  --accent-primary: #a78bfa; /* Violet */
-  --accent-secondary: #22d3ee; /* Cyan */
-  --accent-glow: rgba(167, 139, 250, 0.4);
+  --accent-primary: #fb923c; /* Sunset Orange */
+  --accent-secondary: #f43f5e; /* Vivid Rose */
+  --accent-glow: rgba(251, 146, 60, 0.35);
 
-  --text-main: #f3f4f6;
+  --text-main: #f9fafb;
   --text-muted: #9ca3af;
   --text-disabled: #4b5563;
 
   --color-success: #10b981;
-  --color-success-bg: rgba(16, 185, 129, 0.1);
-  --color-warning: #f59e0b;
+  --color-success-bg: rgba(16, 185, 129, 0.15);
+  --color-warning: #fb923c;
   --color-danger: #ef4444;
-  --color-danger-bg: rgba(239, 68, 68, 0.1);
+  --color-danger-bg: rgba(239, 68, 68, 0.15);
 
   /* Spacing */
   --space-xs: 0.5rem;
@@ -664,19 +664,19 @@ textarea:focus {
   display: flex;
   flex-direction: column;
   position: relative;
-  padding-left: var(--space-lg);
+  padding-left: 36px;
   margin-left: 8px;
 }
 
 .timeline-visual::before {
   content: "";
   position: absolute;
-  left: 4px;
+  left: 15px;
   top: 10px;
   bottom: 10px;
-  width: 2px;
+  width: 3px;
   background: linear-gradient(to bottom, var(--accent-secondary), var(--accent-primary));
-  box-shadow: 0 0 8px var(--accent-glow);
+  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .timeline-node {
@@ -691,10 +691,10 @@ textarea:focus {
 .timeline-node::before {
   content: "";
   position: absolute;
-  left: -24px;
+  left: -25px;
   top: 6px;
-  width: 10px;
-  height: 10px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   background: var(--bg-app);
   border: 2px solid var(--accent-secondary);
